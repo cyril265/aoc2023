@@ -1,17 +1,38 @@
+val searchValues = listOf("one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
+        .mapIndexed { index, value -> SearchValue((index + 1).toString(), value) }
+
+fun firstNumberForLine(line: String) =
+        (searchValues.map { Result(line.indexOf(it.digit), it.digit) } + searchValues.map { Result(line.indexOf(it.word), it.digit) })
+                .filter { it.index > -1 }
+                .minByOrNull { it.index }
+                ?.digit
+
+fun lastNumberForLine(line: String) =
+        (searchValues.map { Result(line.lastIndexOf(it.digit), it.digit) } + searchValues.map { Result(line.lastIndexOf(it.word), it.digit) })
+                .filter { it.index > -1 }
+                .maxByOrNull { it.index }
+                ?.digit
+
+fun part2(input: List<String>) = input.mapNotNull { line ->
+    val firstNumber = firstNumberForLine(line)
+    val lastNumber = lastNumberForLine(line)
+
+    if (firstNumber != null && lastNumber != null) (firstNumber + lastNumber).toInt() else null
+}.sum()
+
+fun part1(input: List<String>) = input
+        .mapNotNull { line ->
+            val first = line.firstOrNull { it.isDigit() }
+            val last = line.lastOrNull { it.isDigit() }
+            if (first != null && last != null) String(charArrayOf(first, last)).toInt() else null
+        }.sum()
+
+
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
-    }
-
-    fun part2(input: List<String>): Int {
-        return input.size
-    }
-
-    // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
-
-    val input = readInput("Day01")
-    part1(input).println()
-    part2(input).println()
+    val input = readToList("day01.txt")
+    part1(input).print()
+    part2(input).print()
 }
+
+data class Result(val index: Int, val digit: String)
+data class SearchValue(val digit: String, val word: String)
