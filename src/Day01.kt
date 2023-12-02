@@ -14,10 +14,10 @@ fun lastNumberForLine(line: String) =
                 ?.digit
 
 fun part2(input: List<String>) = input.mapNotNull { line ->
-    val firstNumber = firstNumberForLine(line)
-    val lastNumber = lastNumberForLine(line)
+    val first = firstNumberForLine(line)
+    val last = lastNumberForLine(line)
 
-    if (firstNumber != null && lastNumber != null) (firstNumber + lastNumber).toInt() else null
+    if (first != null && last != null) (first + last).toInt() else null
 }.sum()
 
 fun part1(input: List<String>) = input
